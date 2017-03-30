@@ -59,7 +59,10 @@ const hide_all_nomor_ktp = (string) => {
 
   // obfuscate the matches string
   var regex = /(\d{3}[-]\d{2}[-])/g;
+  // var regex = /(([\d]{3})([\d]{2})([\d]{4}))/g;
+  // hide = hide.replace(regex, "XXX-XX-")
   hide = hide.replace(regex, "XXX-XX-")
+
 
   return hide;
 
