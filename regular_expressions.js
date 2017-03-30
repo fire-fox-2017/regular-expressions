@@ -2,7 +2,7 @@
 
 // Determine whether a string contains a nomor KTP
 const has_ktp = (string) => {
-  // ...
+  return /\d{3}-\d{2}-\d{4}/.test(string);
 }
 
 console.log('has_ktp if it has what looks like a nomor KTP')
@@ -15,7 +15,8 @@ console.log(has_ktp('please confirm your identity: XXX-XX-1422') === false) // t
 
 // Return the Social Security number from a string.
 const grab_ktp = (string) => {
-  // ...
+  let temp = string.match(/\d{3}-\d{2}-\d{4}/);
+  return (temp != null) ? temp[0] : null;
 }
 
 console.log('grab_ktp returns nomor KTP if the string has an nomor KTP')
@@ -28,7 +29,8 @@ console.log(grab_ktp('please confirm your identity: XXX-XX-1422') === null) // t
 
 // Return all of the Social Security numbers from a string.
 const grab_all_nomor_ktp = (string) => {
-  // ...
+  let temp = string.match(/\d{3}-\d{2}-\d{4}/g);
+  return (temp != null) ? temp : [];
 }
 
 console.log('grab_all_nomor_ktp returns all nomor KTP if the string has any nomor KTP')
@@ -41,8 +43,11 @@ console.log(grab_all_nomor_ktp('please confirm your identity: XXX-XX-1422')) // 
 
 // Obfuscate all of the nomor KTP in a string. Example: XXX-XX-4430.
 const hide_all_nomor_ktp = (string) => {
-  // ...
+  let hide = string;
+  hide = hide.replace(/(\d{3})-(\d{2})-(\d{4})/g, "XXX-XX-$3");
+  return hide;
 }
+
 
 console.log('hide_all_nomor_ktp obfuscates any nomor KTP in the string')
 console.log(hide_all_nomor_ktp('234-60-1422, 350-80-0744, 013-60-8762')) // "XXX-XX-1422, XXX-XX-0744, XXX-XX-8762"
@@ -57,8 +62,11 @@ console.log(hide_all_nomor_ktp(hideString) === hideString) // true
 // Ensure all of the Social Security numbers use dashes for delimiters.
 // Example: 480.01.4430 and 480014430 would both be 480-01-4430.
 const format_nomor = (string) => {
-  // ...
+  let temp = string.replace(/(\d{3})\D?(\d{2})\D?(\d{4})/g, "$1-$2-$3");
+  return temp;
 }
+
+console.log("-------------------")
 
 console.log('format_nomor finds and reformat any nomor KTP in the string')
 console.log(format_nomor('234601422, 350.80.0744, 013-60-8762') === '234-60-1422, 350-80-0744, 013-60-8762') // true
