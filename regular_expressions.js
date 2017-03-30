@@ -2,7 +2,15 @@
 
 // Determine whether a string contains a nomor KTP
 const has_ktp = (string) => {
-  // ...
+  var nomor = string.match(/[0-9]/gi);{
+    if (nomor.length < 9) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+  return nomor;
 }
 
 console.log('has_ktp if it has what looks like a nomor KTP')
@@ -15,7 +23,15 @@ console.log(has_ktp('please confirm your identity: XXX-XX-1422') === false) // t
 
 // Return the Social Security number from a string.
 const grab_ktp = (string) => {
-  // ...
+  var komplit = string.match(/[0-9]/gi);
+//  console.log(komplit);
+  if (komplit.length < 9){
+    return null;
+  }
+  else {
+    return komplit;
+  }
+
 }
 
 console.log('grab_ktp returns nomor KTP if the string has an nomor KTP')
@@ -28,7 +44,15 @@ console.log(grab_ktp('please confirm your identity: XXX-XX-1422') === null) // t
 
 // Return all of the Social Security numbers from a string.
 const grab_all_nomor_ktp = (string) => {
-  // ...
+  var lengkap = string.match(/[0-9]/g)
+  {
+    if (lengkap.length  < 27) {
+      return [];
+    }
+    else {
+      return string;
+    }
+  }
 }
 
 console.log('grab_all_nomor_ktp returns all nomor KTP if the string has any nomor KTP')
@@ -41,8 +65,15 @@ console.log(grab_all_nomor_ktp('please confirm your identity: XXX-XX-1422')) // 
 
 // Obfuscate all of the nomor KTP in a string. Example: XXX-XX-4430.
 const hide_all_nomor_ktp = (string) => {
-  // ...
+  var box = [];
+  var split = string.split("-");
+    for (var i = 0; i < split.length -1; i++){
+      split[i] = split[i].replace(/[0-9]/g,"*");
+      var filter = split.join("-");
+    }
+    return filter;
 }
+
 
 console.log('hide_all_nomor_ktp obfuscates any nomor KTP in the string')
 console.log(hide_all_nomor_ktp('234-60-1422, 350-80-0744, 013-60-8762')) // "XXX-XX-1422, XXX-XX-0744, XXX-XX-8762"
@@ -57,7 +88,8 @@ console.log(hide_all_nomor_ktp(hideString) === hideString) // true
 // Ensure all of the Social Security numbers use dashes for delimiters.
 // Example: 480.01.4430 and 480014430 would both be 480-01-4430.
 const format_nomor = (string) => {
-  // ...
+  var cocok = string.replace(/(\d{3})\D?(\d{2})\D?(\d{4})/g, '$1-$2-$3')
+  return cocok;
 }
 
 console.log('format_nomor finds and reformat any nomor KTP in the string')
