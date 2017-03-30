@@ -3,6 +3,9 @@
 // Determine whether a string contains a nomor KTP
 const has_ktp = (string) => {
   // ...
+  let ktpRegex = /\d+\-\d+\-\d+/;
+  let result = ktpRegex.test(string);
+  return result;
 }
 
 console.log('has_ktp if it has what looks like a nomor KTP')
@@ -16,6 +19,13 @@ console.log(has_ktp('please confirm your identity: XXX-XX-1422') === false) // t
 // Return the Social Security number from a string.
 const grab_ktp = (string) => {
   // ...
+  let ktpRegex = /\d+\-\d+\-\d+/;
+  if(ktpRegex.test(string) === true) {
+    return string.match(ktpRegex).toString();
+  } else {
+    return null;
+  }
+
 }
 
 console.log('grab_ktp returns nomor KTP if the string has an nomor KTP')
@@ -29,6 +39,15 @@ console.log(grab_ktp('please confirm your identity: XXX-XX-1422') === null) // t
 // Return all of the Social Security numbers from a string.
 const grab_all_nomor_ktp = (string) => {
   // ...
+  let ktpRegexGlobal = /\d+\-\d+\-\d+/g;
+  let ktpNumContainer;
+  if(ktpRegexGlobal.test(string) === true) {
+    let ktpNums = string.match(ktpRegexGlobal);
+    ktpNumContainer = ktpNums;
+  } else {
+    return [];
+  }
+  return ktpNumContainer;
 }
 
 console.log('grab_all_nomor_ktp returns all nomor KTP if the string has any nomor KTP')
@@ -42,6 +61,13 @@ console.log(grab_all_nomor_ktp('please confirm your identity: XXX-XX-1422')) // 
 // Obfuscate all of the nomor KTP in a string. Example: XXX-XX-4430.
 const hide_all_nomor_ktp = (string) => {
   // ...
+  let ktpRegex = /(\d+)(\-)(\d+)/g;
+  if (ktpRegex.test(string) === true) {
+    return string.replace(ktpRegex, 'XXX-XX');
+  } else {
+    return string;
+  }
+  
 }
 
 console.log('hide_all_nomor_ktp obfuscates any nomor KTP in the string')
@@ -58,6 +84,34 @@ console.log(hide_all_nomor_ktp(hideString) === hideString) // true
 // Example: 480.01.4430 and 480014430 would both be 480-01-4430.
 const format_nomor = (string) => {
   // ...
+  let ktpPattern = /(\d{3})(\d{2})(\d{4})/;
+  let nonCharRegex = /\W/g;
+  let whiteSpaceCommaRegex = /[^\ \,]+/g;
+  let onlyDigitRegex = /(\d+)/
+  let containerOfKtp = [];
+  
+  let arrOfKtpNums = string.match(whiteSpaceCommaRegex);
+  
+  for(var i = 0; i < arrOfKtpNums.length; i++) {
+    var insertDash = arrOfKtpNums[i].replace(nonCharRegex, '-');
+    if(nonCharRegex.test(arrOfKtpNums[i]) === true) {
+      containerOfKtp.push(insertDash);
+    } else if(onlyDigitRegex.test(arrOfKtpNums[i]) === true) {
+      let tempDigit = [];
+      tempDigit.push(arrOfKtpNums[i]);
+      if(tempDigit[0].length < 9) {
+        return string;
+      }
+    }
+    
+   if(nonCharRegex.test(arrOfKtpNums[i]) === false) {
+      var newKtpNumWithDash = arrOfKtpNums[i].replace(ktpPattern, '$1-$2-$3');
+      containerOfKtp.push(newKtpNumWithDash);
+   }
+  }
+  
+  return containerOfKtp.join(', ');
+  
 }
 
 console.log('format_nomor finds and reformat any nomor KTP in the string')
