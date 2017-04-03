@@ -2,7 +2,7 @@
 
 // Determine whether a string contains a nomor KTP
 const has_ktp = (string) => {
-  // ...
+  return /(\d+)-(\d+)-(\d+)/g.test(string);
 }
 
 console.log('has_ktp if it has what looks like a nomor KTP')
@@ -15,21 +15,32 @@ console.log(has_ktp('please confirm your identity: XXX-XX-1422') === false) // t
 
 // Return the Social Security number from a string.
 const grab_ktp = (string) => {
-  // ...
+return string.match(/(\d+)-(\d+)-(\d+)/g);
 }
 
 console.log('grab_ktp returns nomor KTP if the string has an nomor KTP')
-console.log(grab_ktp("please don't share this: 234-60-1422") === '234-60-1422') // true
+console.log(grab_ktp("please don't share this: 234-60-1422") == '234-60-1422') // true
 
 console.log("grab_ktp if it doesn't have a nomor KTP")
 console.log(grab_ktp('please confirm your identity: XXX-XX-1422') === null) // true
 
 // -----------------------------------------------------------------------------
-
 // Return all of the Social Security numbers from a string.
 const grab_all_nomor_ktp = (string) => {
-  // ...
+  let arr = [],
+      s = string,
+      re = /(\d+)-(\d+)-(\d+)/g,
+      item;
+
+  while (item = re.exec(s)){
+    for(let i = 0; i < item.length ;i++){
+      arr.push(item[i]);
+      (arr.join('-'));
+    }
+  }
+  return arr;
 }
+//src http://stackoverflow.com/questions/10876338/best-way-to-store-js-regex-capturing-groups-in-array
 
 console.log('grab_all_nomor_ktp returns all nomor KTP if the string has any nomor KTP')
 console.log(grab_all_nomor_ktp('234-60-1422, 350-80-0744, 013-60-8762')) // return ["234-60-1422", "350-80-0744", "013-60-8762"])
@@ -41,7 +52,7 @@ console.log(grab_all_nomor_ktp('please confirm your identity: XXX-XX-1422')) // 
 
 // Obfuscate all of the nomor KTP in a string. Example: XXX-XX-4430.
 const hide_all_nomor_ktp = (string) => {
-  // ...
+  return string.replace(/(\d{3})-(\d{2})/g, ("XXX")-("XX"));
 }
 
 console.log('hide_all_nomor_ktp obfuscates any nomor KTP in the string')
@@ -57,7 +68,23 @@ console.log(hide_all_nomor_ktp(hideString) === hideString) // true
 // Ensure all of the Social Security numbers use dashes for delimiters.
 // Example: 480.01.4430 and 480014430 would both be 480-01-4430.
 const format_nomor = (string) => {
-  // ...
+  let format_nomer = /(\d{3)-(\d{2)-(\d{4)/;
+  let regex_word_char = /\W/g;
+  let regex_reduce = /[^\ \,]+/g;
+  let regex_digit = /(\d+)/;
+  let hasil = [];
+  let data = string.match(regex_reduce);
+  for (let i = 0; i < data.length; i++){
+    let tambah_strip = data[i].replace(regex_word_char,"-");
+    if(regex_word_char.test(data[i]) == true) {
+      hasil.push(tambah_strip);
+    } else if (regex_digit.test(data[i]) == true ){
+        if (data[i].length < 9){
+          return string;
+        } hasil.push(data[i].replace(regex_digit, "$1 - $2 - $3"));
+    }
+  }
+  return hasil.join(", ");
 }
 
 console.log('format_nomor finds and reformat any nomor KTP in the string')
